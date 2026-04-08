@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import SignalExplainer from './SignalExplainer'
 
-export default function SignalCard({ signal, currentPrice, onDismiss, onAnalyze, onExport }) {
+export default function SignalCard({ signal, currentPrice, onDismiss, onAnalyze, onExport, apiKey }) {
   const [distSL, setDistSL] = useState(0)
   const [distTP, setDistTP] = useState(0)
 
@@ -150,6 +151,9 @@ export default function SignalCard({ signal, currentPrice, onDismiss, onAnalyze,
 
       {/* Note */}
       <div className="text-xs text-[#666] bg-[#1a1a1a] px-3 py-2.5 rounded-xl mb-3 leading-relaxed">{signal.note}</div>
+
+      {/* Explication pédagogique */}
+      <SignalExplainer signal={signal} apiKey={apiKey} />
 
       {/* Actions */}
       <div className="flex gap-2 flex-wrap">

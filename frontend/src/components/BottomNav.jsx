@@ -1,10 +1,11 @@
 import React from 'react'
 
 const NAV_ITEMS = [
-  { id: 'market',   label: 'Marché',    icon: MarketIcon    },
-  { id: 'signals',  label: 'Signaux',   icon: SignalsIcon   },
-  { id: 'history',  label: 'Historique',icon: HistoryIcon   },
-  { id: 'alerts',   label: 'Alertes',   icon: AlertsIcon    },
+  { id: 'market',    label: 'Marché',    icon: MarketIcon    },
+  { id: 'signals',   label: 'Signaux',   icon: SignalsIcon   },
+  { id: 'formation', label: 'Formation', icon: FormationIcon },
+  { id: 'history',   label: 'Historique',icon: HistoryIcon   },
+  { id: 'alerts',    label: 'Alertes',   icon: AlertsIcon    },
 ]
 
 export default function BottomNav({ active, onNavigate, sigCount = 0 }) {
@@ -36,6 +37,9 @@ function SignalsIcon() {
 }
 function HistoryIcon() {
   return <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><polyline points="3 21 3 15 9 15"/></svg>
+}
+function FormationIcon() {
+  return <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
 }
 function AlertsIcon() {
   return <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>

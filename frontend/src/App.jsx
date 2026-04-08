@@ -10,6 +10,7 @@ import { useSignals } from './hooks/useSignals'
 import { useNotifications } from './hooks/useNotifications'
 import { useMarket } from './hooks/useMarket'
 import { db } from './firebase'
+import FormationPage from './pages/FormationPage'
 import { collection, query, orderBy, limit, onSnapshot, doc, setDoc } from 'firebase/firestore'
 
 function AppInner() {
@@ -41,6 +42,9 @@ function AppInner() {
   const p = prices[currentAsset]
   const currentPrice = p?.price
   const activeSignals = signals.filter(s => !s.asset || s.asset === currentAsset)
+
+  // Récupérer la clé API Claude depuis userData ou localStorage
+  const apiKey = (typeof window !== 'undefined' && localStorage.getItem('claude_api_key')) || ''
 
   const ASSETS = [
     { symbol:'BTCUSDT', short:'BTC', color:'#F7931A', emoji:'₿' },
@@ -116,8 +120,12 @@ function AppInner() {
             </div>
             {loading?<div className="text-center py-12 text-[#666] text-sm">Connexion au backend...</div>:
              activeSignals.length===0?<div className="text-center py-12"><div className="text-5xl opacity-20 mb-3">◎</div><div className="text-sm font-semibold mb-2">Aucun signal actif</div><div className="text-xs text-[#666]">Le moteur tourne en continu.</div></div>:
-             activeSignals.map(s=><SignalCard key={s.id} signal={s} currentPrice={currentPrice} onDismiss={dismissSignal} onAnalyze={sig=>addNotif('info','Analyse',`Signal ${sig.type}`)} onExport={()=>{}}/>)}
+             activeSignals.map(s=><SignalCard key={s.id} signal={s} currentPrice={currentPrice} onDismiss={dismissSignal} onAnalyze={sig=>addNotif('info','Analyse',`Signal ${sig.type}`)} onExport={()=>{}} apiKey={apiKey}/>)}
           </div>
+        )}
+
+        {page === 'formation' && (
+          <FormationPage />
         )}
 
         {page === 'history' && (
