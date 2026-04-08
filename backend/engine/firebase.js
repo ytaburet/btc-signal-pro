@@ -1,13 +1,22 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('../btc-signal-pro-firebase-adminsdk-fbsvc-a30d04391e.json');
 let db = null, messaging = null;
 
 function initFirebase() {
   if (admin.apps.length) return;
+
+  const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '')
+    .replace(/\\n/g, '\n')
+    .replace(/^"|"$/g, '');
+
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      projectId:   process.env.FIREBASE_PROJECT_ID,
+      privateKey:  privateKey,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
     databaseURL: 'https://btc-signal-pro.firebaseio.com'
   });
+
   db = admin.firestore();
   messaging = admin.messaging();
   console.log('Firebase Admin OK');
