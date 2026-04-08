@@ -4,22 +4,28 @@ let db = null, messaging = null;
 function initFirebase() {
   if (admin.apps.length) return;
 
-  const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '')
-    .replace(/\\n/g, '\n')
-    .replace(/^"|"$/g, '');
-
-  admin.initializeApp({
-    credential: admin.credential.cert({
+  let credential;
+  
+  // Essayer d'abord le fichier JSON (local)
+  try {
+    const sa = require('../btc-signal-pro-firebase-adminsdk-fbsvc-a30d04391e.json');
+    credential = admin.credential.cert(sa);
+  } catch(e) {
+    // Fallback sur variables d'environnement (Railway)
+    const key = process.env.FIREBASE_PRIVATE_KEY || '';
+    const cleaned = key.replace(/^["']|["']$/g, '').replace(/\\n/g, '\n');
+    credential = admin.credential.cert({
       projectId:   process.env.FIREBASE_PROJECT_ID,
-      privateKey:  privateKey,
+      privateKey:  cleaned,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    }),
-    databaseURL: 'https://btc-signal-pro.firebaseio.com'
-  });
+    });
+  }
 
+  admin.initializeApp({ credential, databaseURL: 'https://btc-signal-pro.firebaseio.com' });
   db = admin.firestore();
   messaging = admin.messaging();
   console.log('Firebase Admin OK');
+}
 }
 
 function getDB() { if (!db) throw new Error('Firebase non init'); return db; }
